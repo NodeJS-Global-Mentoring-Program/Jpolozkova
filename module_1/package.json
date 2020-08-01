@@ -1,0 +1,28 @@
+{
+  "name": "module_1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NodeJS-Global-Mentoring-Program/jpolozkova.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NodeJS-Global-Mentoring-Program/jpolozkova/issues"
+  },
+  "homepage": "https://github.com/NodeJS-Global-Mentoring-Program/jpolozkova#readme",
+  "dependencies": {
+    "@babel/polyfill": "^7.10.4",
+    "csvtojson": "^2.0.10"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0"
+  }
+}
