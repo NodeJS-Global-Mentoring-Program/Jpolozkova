@@ -1,0 +1,28 @@
+{
+  "name": "mudule_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "csvtojson": "^2.0.10",
+    "express": "^4.17.1",
+    "express-joi-validation": "^4.0.4-beta.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NodeJS-Global-Mentoring-Program/Jpolozkova.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NodeJS-Global-Mentoring-Program/Jpolozkova/issues"
+  },
+  "homepage": "https://github.com/NodeJS-Global-Mentoring-Program/Jpolozkova#readme"
+}
