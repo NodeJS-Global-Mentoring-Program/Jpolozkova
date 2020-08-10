@@ -1,8 +1,8 @@
 const express = require('express');
-const mainRouter = require('./routes/main');
+const mainRouter = require('./users/routes/main');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
@@ -10,4 +10,7 @@ app.listen(port, () => {
 app.use(express.json())
 app.use('/user', mainRouter)
 
+app.all('*', function(req, res, next){
+    res.status(404).send('Not found');
+});
 module.exports = app;
