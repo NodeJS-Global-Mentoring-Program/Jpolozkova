@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "task1": "nodemon task_1.js",
+    "task2": "nodemon task_2.js",
+    "task3": "npx babel-cli task_1.js --out-dir babel_lib && npx babel-cli task_2.js --out-dir babel_lib"
   },
   "repository": {
     "type": "git",
@@ -22,7 +24,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.0",
+    "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0"
   }
 }
