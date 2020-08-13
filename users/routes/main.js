@@ -2,17 +2,6 @@ const express = require('express');
 const router = express.Router();
 const users = require('../controllers/users.service');
 const autoSuggest = require('../utils/auto_suggestion');
-const Joi = require('@hapi/joi')
-
-/*const validator = require('express-joi-validation').createValidator({ passError: true}) 
-const querySchema = Joi.object({
-    id: Joi.int().required(),
-    login: Joi.string().required(),
-    password: Joi.string().required(),
-    age: Joi.int().required(),
-    isDelited: Joi.bool().required()
-})*/
-
 
 router.get('/autoSuggest', async (req, res) => {
     let result = await autoSuggest.getAutoSuggestUsers(req.body.substr, req.body.limit);
@@ -38,18 +27,20 @@ router.delete('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     let result = await users.insertUser(req.body);
-    if(result)
+
+    if(result === true)
         res.send(await users.getUsers());
     else
-        res.status(400).end()
+        res.status(400).send(result);
 })
 
 router.post('/:id', async (req, res) => {
     let result = await users.updateUser(req.params.id, req.body);
-    if(result)
+    
+    if(result === true)
         res.send(await users.getUsers());
     else
-        res.status(400).end()
+        res.status(400).send(result);
 })
 
 /*
