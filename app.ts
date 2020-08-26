@@ -1,5 +1,6 @@
-const express = require('express');
-const mainRouter = require('./users/routes/main');
+import express from 'express';
+import { mainRouter } from ('../users/routes/main');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,4 +14,5 @@ app.use('/user', mainRouter)
 app.all('*', function(req, res, next){
     res.status(404).send('Not found');
 });
-module.exports = app;
+
+export default app;
