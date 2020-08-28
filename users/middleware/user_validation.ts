@@ -1,3 +1,4 @@
+import express from 'express';
 const Joi = require('@hapi/joi')
 
 const validator = require('express-joi-validation').createValidator({ passError: true}) 
@@ -8,19 +9,18 @@ const querySchema = Joi.object({
     isdeleted: Joi.bool()
 })
 
-const middleware = (req, res, next) =>
+const middleware = (req:express.Request, res: express.Response, next: express.NextFunction) =>
 {
     try{
-      const validtionRes = Joi.attempt(req.body, querySchema);
-      console.log("error", validtionRes); 
+      Joi.attempt(req.body, querySchema);
       next();
     }
     catch(error)
     {
-      const { details } = error; 
-      const message = details.map(i => i.message).join(',');
+      const { details } = error;   
+      const message = details.map((i: any) => i.message).join(',');
       res.status(422).json({ error: message }) 
     }
-  }
+}
 
 module.exports = middleware;

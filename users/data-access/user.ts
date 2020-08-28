@@ -1,37 +1,37 @@
-
-const user = require('../models/user');
+const userModel = require('../models/user');
+import { IUser } from "../interfaces/iuser";
 
 class userDAL
 {
     static async getUsers()  {
-        return await user.findAll();;
+        return await userModel.findAll();;
     }
 
-    static async getById (id) {
-        return await user.findByPk(id);
+    static async getById (id: number) {
+        return await userModel.findByPk(id);
     }
 
-    static getByLogin (login) {
-        let result = user.findOne({ where: { login: login} });
+    static getByLogin (login: string) {
+        let result = userModel.findOne({ where: { login: login} });
         if(result) 	
             return result;
         return false;   
     }
 
-    static async _updateUser (userId, userData) {
-        await user.update(
+    static async _updateUser (userId: number, userData: IUser) {
+        await userModel.update(
         { 
             login: userData.login, 
             password: userData.password, 
             age: userData.age,
-            isdeleted: userData.isdeleted
+            isdeleted: userData.isdeleted ? 1 : 0
         },
         {
             where: { id: userId }
         });
     }
 
-    static async getUser(id)
+    static async getUser(id: number)
     {
         let user = await this.getById(id);
         if(user)
@@ -39,20 +39,20 @@ class userDAL
         return false;
     }
 
-    static async updateUser (id, userData)
+    static async updateUser (id: number, userData: IUser)
     {
-        let user = getById(id);
+        let user = this.getById(id);
         if(user)
         {
-            await _updateUser(id, userData);
+            await this._updateUser(id, userData);
             return true;
         }
         return `User with id ${id} was not found`;
     }
 
-    static async insertUser (userData)
+    static async insertUser (userData: IUser)
     {    
-        await user.create(
+        await userModel.create(
             { 
                 login: userData.login, 
                 password: userData.password, 
@@ -61,12 +61,12 @@ class userDAL
         return true;
     }
 
-    static async deleteUser (id) {
-        let user = await getById(id);
+    static async deleteUser (id: number) {
+        let user = await this.getById(id);
         if(user)
         {
             user.isdeleted = 1;
-            await _updateUser(id, user);
+            await this._updateUser(id, user);
             return true;
         }
         return false;	

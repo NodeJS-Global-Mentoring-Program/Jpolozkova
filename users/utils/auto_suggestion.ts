@@ -1,4 +1,6 @@
-const userComparer = (user1, user2) => {
+import { IUser } from "../interfaces/iuser";
+
+const userComparer = (user1: IUser, user2: IUser) => {
     if (user1.login < user2.login)
       return -1;
     if (user1.login > user2.login)
@@ -6,7 +8,7 @@ const userComparer = (user1, user2) => {
     return 0;
 }
 
-exports.getAutoSuggestUsers = async (loginSubstring, limit) =>
+exports.getAutoSuggestUsers = async (loginSubstring: String, limit: Array<IUser>) =>
 {
     if(limit.length > 0)
     {

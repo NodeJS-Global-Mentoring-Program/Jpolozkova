@@ -1,6 +1,5 @@
 import express from 'express';
-import { mainRouter } from ('../users/routes/main');
-
+const mainRouter = require('./users/routes/main');
 
 const app = express();
 const port = process.env.PORT || 3000;
