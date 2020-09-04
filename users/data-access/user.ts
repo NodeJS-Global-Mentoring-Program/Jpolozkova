@@ -1,4 +1,4 @@
-const userModel = require('../models/user');
+import { userModel } from "../models/user_group";
 import { IUser } from "../interfaces/iuser";
 
 class userDAL
@@ -72,5 +72,4 @@ class userDAL
         return false;	
     }
 }
-
 module.exports = userDAL;

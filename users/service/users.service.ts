@@ -1,36 +1,36 @@
 import { IUser } from "../interfaces/iuser";
-import { IUserModel } from "../interfaces/iusermodel";
+import { IUserDAL } from "../interfaces/iuserdal";
 
 class userService {
-	userModel: IUserModel;
-	constructor(userModel: IUserModel){
-	  this.userModel = userModel;
+	userDAL: IUserDAL;
+	constructor(user: IUserDAL){
+	  this.userDAL = user;
 	}
 
 	async getUsers()
 	{	
-		return await this.userModel.getUsers();
+		return await this.userDAL.getUsers();
 	}
 
 	async getUser (id: number)
 	{
-		console.log(this.userModel)
-		return await this.userModel.getUser(id);
+		console.log(this.userDAL)
+		return await this.userDAL.getUser(id);
 	}
 
 	async updateUser (id: number, userData: IUser)
 	{
-		return await this.userModel.updateUser(id, userData);
+		return await this.userDAL.updateUser(id, userData);
 	}
 
 	async insertUser (userData: IUser)
 	{
-		return await this.userModel.insertUser(userData);
+		return await this.userDAL.insertUser(userData);
 	}
 
 	async deleteUser (id: number)
 	{
-		return await this.userModel.deleteUser(id);
+		return await this.userDAL.deleteUser(id);
 	}
 }
 

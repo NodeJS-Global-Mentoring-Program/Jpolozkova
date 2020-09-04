@@ -1,5 +1,7 @@
 import express from 'express';
-const mainRouter = require('./users/routes/main');
+const userRouter = require('./users/routes/user');
+const groupRouter = require('./users/routes/group');
+const userGroupRouter = require('./users/routes/user_group');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -8,7 +10,9 @@ app.listen(port, () => {
 })
 
 app.use(express.json())
-app.use('/user', mainRouter)
+app.use('/usergroup', userGroupRouter)
+app.use('/user', userRouter)
+app.use('/group', groupRouter)
 
 app.all('*', function(req, res, next){
     res.status(404).send('Not found');

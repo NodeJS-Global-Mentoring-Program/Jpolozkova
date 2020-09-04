@@ -1,5 +1,3 @@
-import express from 'express';
-
 exports.executeQuery  = async (query: Promise<any>, next: any) => {
     try {
         return await query;
