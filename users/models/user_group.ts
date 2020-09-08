@@ -1,6 +1,10 @@
 const groupDBContext = require("../utils/dbutils");
 
-export class groupModel extends groupDBContext.Model {}
+export class groupModel extends groupDBContext.Model {
+  static associate = () => {
+    groupModel.associations.groups = groupModel.belongsToMany(userModel, {through: 'usergroup'});
+  }
+}
 
 groupModel.init({
 	name: {
@@ -19,7 +23,11 @@ groupModel.init({
 });
 
 
-export class userModel extends groupDBContext.Model {}
+export class userModel extends groupDBContext.Model {
+  static associate = () => {
+    userModel.associations.groups = userModel.belongsToMany(groupModel, {through: 'usergroup'});
+  }
+}
 
 userModel.init({
 	login: {
@@ -48,5 +56,13 @@ userModel.init({
   	modelName: 'user',
   	timestamps: false
 });
-groupModel.belongsToMany(userModel, {through: 'usergroup', timestamps: false, foreignKey: { name: 'userid' }});
-userModel.belongsToMany(groupModel, {through: 'usergroup', timestamps: false, foreignKey: { name: 'groupid' }});
+
+[groupModel, userModel].forEach((entity) => {
+  if(entity.associate)
+    entity.associate();
+})
+
+groupDBContext.sequelize.sync()
+  .then(() => {
+    console.log(`Database & tables created!`)
+  });

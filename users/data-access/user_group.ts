@@ -10,31 +10,14 @@ class userGroupDAL
             where: { id: id },
             include: userModel
           });
+          return result;
     }
 
     static async addUsersToGroup (id: number, userIds: Array<number>) 
     {
         const result = await groupDBContext.sequelize.transaction(async (t: any) => {
-            const userlist: Array<userModel> = await userModel.findAll({
-                where: {
-                    id: {
-                        [Op.or]: userIds
-                    }
-                }
-            });
-
             const group = await groupModel.findOne({ where: { id: id }});
-            await group.addUsers(userIds);
-
-           /* 
-            for(let i = 0; i <= userlist.length; i++)
-            {
-                console.log(userlist[i]);
-                await userlist[i].addGroup(group);
-                //group.addUser();
-            }*/
-
- 
+            await group.addUsers(userIds);  
         });
     }
 }
