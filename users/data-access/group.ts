@@ -51,6 +51,7 @@ class groupDAL
 
     static async insertGroup (groupData: IGroup)
     {    
+        //throw "Error2";
         await groupModel.create(
             { 
                 name: groupData.name, 

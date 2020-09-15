@@ -14,7 +14,6 @@ class userService {
 
 	async getUser (id: number)
 	{
-		console.log(this.userDAL)
 		return await this.userDAL.getUser(id);
 	}
 

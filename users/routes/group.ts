@@ -2,36 +2,51 @@ import express from 'express';
 const router = express.Router();
 const groupService = require('../service/group.service');
 const groupDAL = require('../data-access/group');
-const errorHandler = require('../utils/error_handler');
+const errHandler = require('../utils/error_handler');
 const groupValidation = require('../middleware/group_validation');
+const groupLogger = require('../middleware/logger');
 
 const groups = new groupService(groupDAL);
+const errorHandler = new errHandler(groupLogger);
 
-router.get('/', async (req, res, next) => {   
-    res.send(await errorHandler.executeQuery(await groups.getGroups(), next));
+const logInfo = (req:express.Request, res: express.Response, next: express.NextFunction) =>
+{
+  let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`
+  groupLogger.log(`Method was called: ${req.method} ${req.baseUrl} with params: ${params};`);
+  next();
+}
+
+router.get('/', logInfo, async (req, res, next) => {   
+    let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`
+    res.send(await errorHandler.executeQuery(await groups.getGroups(), next, req.method + req.baseUrl, params));
 })
 
-router.get('/:id', async (req, res, next) => {
-    const user = await errorHandler.executeQuery(await groups.getGroup(req.params.id), next);
-    res.send(user);
+router.get('/:id', logInfo, async (req, res, next) => {
+    let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`
+    const group = await errorHandler.executeQuery(await groups.getGroup(req.params.id), next, req.method + req.baseUrl, params);
+    if(group)
+        res.send(group);
 })
 
-router.delete('/:id', async (req, res, next) => {
-    let result = await errorHandler.executeQuery(await groups.deleteGroup(req.params.id), next);
+router.delete('/:id', logInfo, async (req, res, next) => {
+    let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`
+    let result = await errorHandler.executeQuery(await groups.deleteGroup(req.params.id), next, req.method + req.baseUrl, params);
     if(result)
         res.send(await groups.getGroups());
-    else
-        res.status(400).end();
 })
 
-router.post('/', groupValidation, async (req, res, next) => {
-    let result = await errorHandler.executeQuery(await groups.insertGroup(req.body), next);
-    res.send(await groups.getGroups());
+router.post('/', logInfo,  groupValidation, async (req, res, next) => {
+    let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`
+    let result = await errorHandler.executeQuery(groups.insertGroup(req.body), next, req.method + req.baseUrl, params);
+    if(result)
+        res.send(await groups.getGroups());
 })
 
-router.post('/:id', groupValidation, async (req, res, next) => {
-    let result = await errorHandler.executeQuery(await groups.updateGroup(req.params.id, req.body, next));
-    res.send(await groups.getGroups());
+router.post('/:id', logInfo, groupValidation, async (req, res, next) => {
+    let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`
+    let result = await errorHandler.executeQuery(await groups.updateGroup(req.params.id, req.body), next, req.method + req.baseUrl, params);
+    if(result)
+        res.send(await groups.getGroups());
 })
 
 module.exports = router;
