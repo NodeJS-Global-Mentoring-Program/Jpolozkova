@@ -4,17 +4,11 @@ const groupService = require('../service/group.service');
 const groupDAL = require('../data-access/group');
 const errHandler = require('../utils/error_handler');
 const groupValidation = require('../middleware/group_validation');
-const groupLogger = require('../middleware/logger');
+const logInfo = require('../middleware/logger');
+const logger = require('../utils/logger');
 
 const groups = new groupService(groupDAL);
-const errorHandler = new errHandler(groupLogger);
-
-const logInfo = (req:express.Request, res: express.Response, next: express.NextFunction) =>
-{
-  let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`
-  groupLogger.log(`Method was called: ${req.method} ${req.baseUrl} with params: ${params};`);
-  next();
-}
+const errorHandler = new errHandler(logger);
 
 router.get('/', logInfo, async (req, res, next) => {   
     let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`

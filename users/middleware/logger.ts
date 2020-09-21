@@ -1,31 +1,12 @@
-import winston from "winston";
-import { ILogger } from "../interfaces/ilogger";
+import express from 'express';
+import {Logger} from '../utils/logger';
 
-class logger  implements ILogger
+const middleware = (req:express.Request, res: express.Response, next: express.NextFunction) =>
 {
-  wLogger: any;
-  constructor(){
-	  this.configureLogger();
-  }
-  
-  configureLogger = () => {
-    this.wLogger = winston.createLogger({
-      level: 'info',
-      format: winston.format.json(),
-      transports: [
-        new winston.transports.Console()
-      ]});
-  };
-
-  log = (message: string) =>
-  {
-    this.wLogger.log({level: 'info', message: message});
-  }
-
-  logError = (error: String) =>
-  {
-    this.wLogger.log({level: 'error', message: error});
-  }
+  let params = `${JSON.stringify(req.body)}; ${JSON.stringify(req.params)}`
+  let logger = new Logger();
+  logger.log(`Method was called: ${req.method} ${req.baseUrl} with params: ${params};`);
+  next();
 }
-module.exports = new logger();
 
+module.exports = middleware;

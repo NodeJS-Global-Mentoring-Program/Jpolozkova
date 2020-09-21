@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+<div id="link" style="cursor: pointer;">Send CORS request</div>
+<script>
+$("#link").click(function() {
+	 $.get( "http://localhost:3004/user", function( data ) {
+	  $( "#link" ).html( JSON.stringify(data) );
+	});
+});
+</script>
+</body>
+</html>

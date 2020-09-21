@@ -1,24 +1,37 @@
 import { userModel } from "../models/user_group";
 import { IUser } from "../interfaces/iuser";
+import { IUserDAL } from "../interfaces/iuserdal";
 
-class userDAL
+export class UserDAL implements IUserDAL
 {
-    static async getUsers()  {
+    async getUsers(): Promise<Array<IUser>> {
         return await userModel.findAll();;
     }
 
-    static async getById (id: number) {
+    async getById (id: number): Promise<IUser> {
         return await userModel.findByPk(id);
     }
 
-    static getByLogin (login: string) {
-        let result = userModel.findOne({ where: { login: login} });
+    async getByLogin (login: string) {
+        let result = await userModel.findOne({ where: { login: login} });
         if(result) 	
             return result;
         return false;   
     }
 
-    static async _updateUser (userId: number, userData: IUser) {
+    async checkLogin(login: string, password: string):Promise<boolean> {
+        if(!login || !password) 	
+            return false;
+        let user = await this.getByLogin(login);
+       
+        if(!user) 	
+            return false;
+        if(user.password != password)
+            return false;  
+        return true;
+    }
+
+    async _updateUser (userId: number, userData: IUser) {
         await userModel.update(
         { 
             login: userData.login, 
@@ -31,15 +44,12 @@ class userDAL
         });
     }
 
-    static async getUser(id: number)
+    async getUser(id: number): Promise<IUser>
     {
-        let user = await this.getById(id);
-        if(user)
-            return user;    
-        return false;
+       return await this.getById(id);
     }
 
-    static async updateUser (id: number, userData: IUser)
+    async updateUser(id: number, userData: IUser): Promise<boolean>
     {
         let user = this.getById(id);
         if(user)
@@ -47,10 +57,10 @@ class userDAL
             await this._updateUser(id, userData);
             return true;
         }
-        return `User with id ${id} was not found`;
+        return false;
     }
 
-    static async insertUser (userData: IUser)
+    async insertUser (userData: IUser): Promise<boolean>
     {    
         await userModel.create(
             { 
@@ -61,15 +71,14 @@ class userDAL
         return true;
     }
 
-    static async deleteUser (id: number) {
+    async deleteUser (id: number): Promise<boolean> {
         let user = await this.getById(id);
         if(user)
         {
-            user.isdeleted = 1;
+            user.isdeleted = true;
             await this._updateUser(id, user);
             return true;
         }
         return false;	
     }
 }
-module.exports = userDAL;

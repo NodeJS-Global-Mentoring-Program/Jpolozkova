@@ -1,18 +1,26 @@
 import express from 'express';
+import cors from 'cors';
 const userRouter = require('./users/routes/user');
 const groupRouter = require('./users/routes/group');
 const userGroupRouter = require('./users/routes/user_group');
-const logger = require('./users/middleware/logger');
+const loginRouter = require('./users/routes/login');
+import {Logger} from './users/utils/logger';
+const authValidation = require('./users/middleware/auth_validation');
 
 const app = express();
 const port = process.env.PORT || 3004;
+const logger = new Logger();
 app.listen(port, () => {
-    logger.log(`App listening at localhost:${port}`);
+  logger.log(`App listening at localhost:${port}`);
 })
 
 app.use(express.json())
-app.use('/usergroup', userGroupRouter)
+app.use(cors())
+app.use('/login', loginRouter)
 app.use('/user', userRouter)
+
+app.use(authValidation)
+app.use('/usergroup', userGroupRouter)
 app.use('/group', groupRouter)
 
 app.all('*', function(req, res, next){

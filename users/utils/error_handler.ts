@@ -8,11 +8,23 @@ class errorHandler {
     
     executeQuery  = async (query: Promise<any>, next: any, method: string, params: string) => {
         let _logger = this.logger;
-        let q = await query.catch((error: Error) => {
-            _logger.logError(`Method ${method} with parameters:${params} throws an exception: ${error}`);
+        console.log(query);
+        if(query.catch){
+          let q = await query.catch((error: Error) => {
+            _logger.logError(`Error from common err hahdler: Method ${method} with parameters:${params} throws an exception: ${error}`);
             next(error)
           });
-        return q;
+          return q;
+        }
+        try {
+          return await query;
+        }
+        catch (ex)
+        {
+          _logger.logError(`Error from common err hahdler: Method ${method} with parameters:${params} throws an exception: ${ex}`);
+          next(ex)
+        }
+
     };
    }
    module.exports = errorHandler;
