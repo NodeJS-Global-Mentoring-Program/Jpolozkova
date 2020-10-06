@@ -1,5 +1,7 @@
 const groupDBContext = require("../utils/dbutils");
 
+export class dbModel extends groupDBContext.Model {}
+
 export class groupModel extends groupDBContext.Model {
   static associate = () => {
     groupModel.associations.groups = groupModel.belongsToMany(userModel, {through: 'usergroup'});

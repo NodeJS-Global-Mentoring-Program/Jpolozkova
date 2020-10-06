@@ -1,7 +1,7 @@
 import { IUser } from "../interfaces/iuser";
 import { IUserDAL } from "../interfaces/iuserdal";
 
-class userService {
+export class UserService {
 	userDAL: IUserDAL;
 	constructor(user: IUserDAL){
 	  this.userDAL = user;
@@ -32,5 +32,3 @@ class userService {
 		return await this.userDAL.deleteUser(id);
 	}
 }
-
-module.exports = userService;

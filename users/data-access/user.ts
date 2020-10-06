@@ -1,19 +1,24 @@
-import { userModel } from "../models/user_group";
+import { dbModel } from "../models/user_group";
 import { IUser } from "../interfaces/iuser";
 import { IUserDAL } from "../interfaces/iuserdal";
 
 export class UserDAL implements IUserDAL
 {
+    userModel: dbModel;
+	constructor(model: dbModel){
+	  this.userModel = model;
+    }
+    
     async getUsers(): Promise<Array<IUser>> {
-        return await userModel.findAll();;
+        return await this.userModel.findAll();;
     }
 
     async getById (id: number): Promise<IUser> {
-        return await userModel.findByPk(id);
+        return await this.userModel.findByPk(id);
     }
 
     async getByLogin (login: string) {
-        let result = await userModel.findOne({ where: { login: login} });
+        let result = await this.userModel.findOne({ where: { login: login} });
         if(result) 	
             return result;
         return false;   
@@ -32,7 +37,7 @@ export class UserDAL implements IUserDAL
     }
 
     async _updateUser (userId: number, userData: IUser) {
-        await userModel.update(
+        await this.userModel.update(
         { 
             login: userData.login, 
             password: userData.password, 
@@ -62,7 +67,7 @@ export class UserDAL implements IUserDAL
 
     async insertUser (userData: IUser): Promise<boolean>
     {    
-        await userModel.create(
+        await this.userModel.create(
             { 
                 login: userData.login, 
                 password: userData.password, 

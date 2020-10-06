@@ -7,11 +7,6 @@ export class LoginService {
 	  this.userDAL = user;
 	}
 
-	async checkToken(token: string)
-	{
-
-	}
-
 	async doLogin(login: string, password: string) : Promise<string>
 	{	
 		let isCorrectLogin = await this.userDAL.checkLogin(login, password);

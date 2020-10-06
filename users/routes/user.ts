@@ -7,8 +7,9 @@ const errHandler = require('../utils/error_handler');
 const validationMiddleware = require('../middleware/user_validation');
 const logger = require('../utils/logger');
 const logInfo = require('../middleware/logger');
+import { userModel } from "../models/user_group";
 
-const users = new userService(new UserDAL());
+const users = new userService(new UserDAL(userModel));
 const errorHandler = new errHandler(logger);
 
 router.get('/autoSuggest', logInfo, async (req, res) => {
