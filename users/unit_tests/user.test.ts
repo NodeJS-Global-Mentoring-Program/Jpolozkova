@@ -1,6 +1,8 @@
 import {UserService} from '../service/users.service';
 import {UserDAL} from '../data-access/user';
 import { IUser } from "../interfaces/iuser";
+import router from "../routes/user";
+const userService = require('../service/users.service');
 
 let testUser: IUser = {
   id: 1,
@@ -22,7 +24,7 @@ let SequelizeMock = require('sequelize-mock');
 let DBConnectionMock = new SequelizeMock();
 let UserMock = DBConnectionMock.define('users', testUser);
 
-//becaus of this: https://github.com/BlinkUX/sequelize-mock/pull/85
+//because of this: https://github.com/BlinkUX/sequelize-mock/pull/85
 UserMock.findByPk = UserMock.findById;
 
 const users = new UserService(new UserDAL(UserMock));
@@ -41,4 +43,3 @@ describe("Test User Service", () => {
     expect(updResult).toEqual(true);
   })
 })
-

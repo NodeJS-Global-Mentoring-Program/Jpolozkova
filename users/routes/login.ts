@@ -5,9 +5,10 @@ const errHandler = require('../utils/error_handler');
 const logInfo = require('../middleware/logger');
 import {UserDAL} from '../data-access/user';
 const logger = require('../utils/logger');
+import { userModel } from "../models/user_group";
 
 const errorHandler = new errHandler(logger);
-let userDal = new UserDAL();
+let userDal = new UserDAL(userModel);
 const login = new LoginService(userDal);
 
 router.post('/', logInfo, async (req, res, next) => {
